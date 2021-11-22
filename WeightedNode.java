@@ -1,15 +1,15 @@
 import java.util.LinkedList;
 
-public class NodeWeighted {
+public class WeightedNode {
     // The int n and String name are just arbitrary attributes
     // we've chosen for our nodes these attributes can of course
     // be whatever you need
     int n;
     String name;
     private boolean visited;
-    LinkedList<EdgeWeighted> edges;
+    LinkedList<WeightedEdge> edges;
 
-    NodeWeighted(int n, String name) {
+    WeightedNode(int n, String name) {
         this.n = n;
         this.name = name;
         visited = false;

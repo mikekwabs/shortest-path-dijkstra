@@ -4,24 +4,24 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-public class GraphWeighted {
-    private Set<NodeWeighted> nodes;
+public class WeightedGraph {
+    private Set<WeightedNode> nodes;
     private boolean directed;
 
-    GraphWeighted(boolean directed) {
+    WeightedGraph(boolean directed) {
         this.directed = directed;
         nodes = new HashSet<>();
     }
 
     // Doesn't need to be called for any node that has an edge to another node
     // since addEdge makes sure that both nodes are in the nodes Set
-    public void addNode(NodeWeighted... n) {
+    public void addNode(WeightedNode... n) {
         // We're using a var arg method so we don't have to call
         // addNode repeatedly
         nodes.addAll(Arrays.asList(n));
     }
 
-    public void addEdge(NodeWeighted source, NodeWeighted destination, double weight) {
+    public void addEdge(WeightedNode source, WeightedNode destination, double weight) {
         // Since we're using a Set, it will only add the nodes
         // if they don't already exist in our graph
         nodes.add(source);
@@ -35,10 +35,10 @@ public class GraphWeighted {
         }
     }
 
-    private void addEdgeHelper(NodeWeighted a, NodeWeighted b, double weight) {
+    private void addEdgeHelper(WeightedNode a, WeightedNode b, double weight) {
         // Go through all the edges and see whether that edge has
         // already been added
-        for (EdgeWeighted edge : a.edges) {
+        for (WeightedEdge edge : a.edges) {
             if (edge.source == a && edge.destination == b) {
                 // Update the value in case it's a different one now
                 edge.weight = weight;
@@ -47,12 +47,12 @@ public class GraphWeighted {
         }
         // If it hasn't been added already (we haven't returned
         // from the for loop), add the edge
-        a.edges.add(new EdgeWeighted(a, b, weight));
+        a.edges.add(new WeightedEdge(a, b, weight));
     }
 
     public void printEdges() {
-        for (NodeWeighted node : nodes) {
-            LinkedList<EdgeWeighted> edges = node.edges;
+        for (WeightedNode node : nodes) {
+            LinkedList<WeightedEdge> edges = node.edges;
 
             if (edges.isEmpty()) {
                 System.out.println("Node " + node.name + " has no edges.");
@@ -60,16 +60,16 @@ public class GraphWeighted {
             }
             System.out.print("Node " + node.name + " has edges to: ");
 
-            for (EdgeWeighted edge : edges) {
+            for (WeightedEdge edge : edges) {
                 System.out.print(edge.destination.name + "(" + edge.weight + ") ");
             }
             System.out.println();
         }
     }
 
-    public boolean hasEdge(NodeWeighted source, NodeWeighted destination) {
-        LinkedList<EdgeWeighted> edges = source.edges;
-        for (EdgeWeighted edge : edges) {
+    public boolean hasEdge(WeightedNode source, WeightedNode destination) {
+        LinkedList<WeightedEdge> edges = source.edges;
+        for (WeightedEdge edge : edges) {
             // Again relying on the fact that all classes share the
             // exact same NodeWeighted object
             if (edge.destination == destination) {
@@ -81,25 +81,25 @@ public class GraphWeighted {
 
     // Necessary call if we want to run the algorithm multiple times
     public void resetNodesVisited() {
-        for (NodeWeighted node : nodes) {
+        for (WeightedNode node : nodes) {
             node.unvisit();
         }
     }
 
-    public void DijkstraShortestPath(NodeWeighted start, NodeWeighted end) {
+    public void DijkstraShortestPath(WeightedNode start, WeightedNode end) {
         // We keep track of which path gives us the shortest path for each node
         // by keeping track how we arrived at a particular node, we effectively
         // keep a "pointer" to the parent node of each node, and we follow that
         // path to the start
-        HashMap<NodeWeighted, NodeWeighted> changedAt = new HashMap<>();
+        HashMap<WeightedNode, WeightedNode> changedAt = new HashMap<>();
         changedAt.put(start, null);
 
         // Keeps track of the shortest path we've found so far for every node
-        HashMap<NodeWeighted, Double> shortestPathMap = new HashMap<>();
+        HashMap<WeightedNode, Double> shortestPathMap = new HashMap<>();
 
         // Setting every node's shortest path weight to positive infinity to start
         // except the starting node, whose shortest path weight is 0
-        for (NodeWeighted node : nodes) {
+        for (WeightedNode node : nodes) {
             if (node == start)
                 shortestPathMap.put(start, 0.0);
             else
@@ -108,7 +108,7 @@ public class GraphWeighted {
 
         // Now we go through all the nodes we can go to from the starting node
         // (this keeps the loop a bit simpler)
-        for (EdgeWeighted edge : start.edges) {
+        for (WeightedEdge edge : start.edges) {
             shortestPathMap.put(edge.destination, edge.weight);
             changedAt.put(edge.destination, start);
         }
@@ -118,7 +118,7 @@ public class GraphWeighted {
         // This loop runs as long as there is an unvisited node that we can
         // reach from any of the nodes we could till then
         while (true) {
-            NodeWeighted currentNode = closestReachableUnvisited(shortestPathMap);
+            WeightedNode currentNode = closestReachableUnvisited(shortestPathMap);
             // If we haven't reached the end node yet, and there isn't another
             // reachable node the path between start and end doesn't exist
             // (they aren't connected)
@@ -132,14 +132,14 @@ public class GraphWeighted {
                 System.out.println(
                         "The path with the smallest weight between " + start.name + " and " + end.name + " is:");
 
-                NodeWeighted child = end;
+                WeightedNode child = end;
 
                 // It makes no sense to use StringBuilder, since
                 // repeatedly adding to the beginning of the string
                 // defeats the purpose of using StringBuilder
                 String path = end.name;
                 while (true) {
-                    NodeWeighted parent = changedAt.get(child);
+                    WeightedNode parent = changedAt.get(child);
                     if (parent == null) {
                         break;
                     }
@@ -159,7 +159,7 @@ public class GraphWeighted {
             // Now we go through all the unvisited nodes our current node has an edge to
             // and check whether its shortest path value is better when going through our
             // current node than whatever we had before
-            for (EdgeWeighted edge : currentNode.edges) {
+            for (WeightedEdge edge : currentNode.edges) {
                 if (edge.destination.isVisited())
                     continue;
 
@@ -171,10 +171,10 @@ public class GraphWeighted {
         }
     }
 
-    private NodeWeighted closestReachableUnvisited(HashMap<NodeWeighted, Double> shortestPathMap) {
+    private WeightedNode closestReachableUnvisited(HashMap<WeightedNode, Double> shortestPathMap) {
         double shortestDistance = Double.POSITIVE_INFINITY;
-        NodeWeighted closestReachableNode = null;
-        for (NodeWeighted node : nodes) {
+        WeightedNode closestReachableNode = null;
+        for (WeightedNode node : nodes) {
             if (node.isVisited())
                 continue;
 

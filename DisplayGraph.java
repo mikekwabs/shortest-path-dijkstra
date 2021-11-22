@@ -1,13 +1,13 @@
-public class GraphShow {
+public class DisplayGraph {
     public static void main(String[] args) {
-        GraphWeighted graphWeighted = new GraphWeighted(true);
-        NodeWeighted zero = new NodeWeighted(0, "0");
-        NodeWeighted one = new NodeWeighted(1, "1");
-        NodeWeighted two = new NodeWeighted(2, "2");
-        NodeWeighted three = new NodeWeighted(3, "3");
-        NodeWeighted four = new NodeWeighted(4, "4");
-        NodeWeighted five = new NodeWeighted(5, "5");
-        NodeWeighted six = new NodeWeighted(6, "6");
+        WeightedGraph graphWeighted = new WeightedGraph(true);
+        WeightedNode zero = new WeightedNode(0, "0");
+        WeightedNode one = new WeightedNode(1, "1");
+        WeightedNode two = new WeightedNode(2, "2");
+        WeightedNode three = new WeightedNode(3, "3");
+        WeightedNode four = new WeightedNode(4, "4");
+        WeightedNode five = new WeightedNode(5, "5");
+        WeightedNode six = new WeightedNode(6, "6");
 
         // Our addEdge method automatically adds Nodes as well.
         // The addNode method is only there for unconnected Nodes,
