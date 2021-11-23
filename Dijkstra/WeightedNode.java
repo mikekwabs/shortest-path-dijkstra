@@ -1,3 +1,5 @@
+package Dijkstra;
+
 import java.util.LinkedList;
 
 public class WeightedNode {

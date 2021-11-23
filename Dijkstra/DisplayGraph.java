@@ -1,3 +1,5 @@
+package Dijkstra;
+
 public class DisplayGraph {
     public static void main(String[] args) {
         WeightedGraph graphWeighted = new WeightedGraph(true);

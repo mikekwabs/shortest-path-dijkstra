@@ -1,3 +1,5 @@
+package Dijkstra;
+
 public class WeightedEdge implements Comparable<WeightedEdge> {
 
     WeightedNode source;
