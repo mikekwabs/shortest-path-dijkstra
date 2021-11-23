@@ -5,6 +5,7 @@
 ##### First make sure you compile the code; to do that,
 
 ```
+cd Dijkstra
 javac DisplayGraph.java
 ```
 
@@ -18,3 +19,13 @@ java DisplayGraph
 
 ##### To use the vogel approximation method, you will need to enter an array of supply, demand, and the cost the cost should be enter in a 2-D array. The algorithm calculates the total cost to reach a destination taking the supply and demand into consideration.
 
+```
+cd VogelApproximation
+javac VogelApproximation.java
+```
+
+#### And;
+
+```
+java VogelApproximation
+```
