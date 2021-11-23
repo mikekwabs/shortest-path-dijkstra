@@ -147,7 +147,7 @@ public class WeightedGraph {
                     // Since our changedAt map keeps track of child -> parent relations
                     // in order to print the path we need to add the parent before the child and
                     // it's descendants
-                    path = parent.name + " " + path;
+                    path = parent.name + " -> " + path;
                     child = parent;
                 }
                 System.out.println(path);
